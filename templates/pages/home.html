@@ -8,10 +8,18 @@ This is amazing!!!
 <!-- @Anyi replace this part into the content part of base.html-->
 {% block content %}
 Welcome to Tweetme 2
-{% endblock content %}
+
+<div id="tweets_div_id">
+    Loading ...
+</div>
 
 <!-- @Anyi I want my page to automatically trigger a reload-->
 <script>
+    //const never changes, var and let can change
+    //change the text content in tweets_div_id
+    const tweetElement = document.getElementById("tweets_div_id") //get html elmt
+    //tweetElement.innerHTML = 'Loading...'//set html elmt
+
     const xhr = new XMLHttpRequest() //instantiat
     const method = 'GET'//POST
     const url = '/tweets' // http://127.0.0.1:8000/tweets 
@@ -21,8 +29,19 @@ Welcome to Tweetme 2
     xhr.open(method, url) //open up request with GET mtd and http://127.0.0.1:8000/tweets url
     xhr.onload = function () {//once it finishes loading logout the response that comes back from the request
         const serverResponse = xhr.response
-        var listedItems = serverResponse.tweet_list_response
-        console.log(listedItems)
+        const listedItems = serverResponse.tweet_list_response
+        //console.log(listedItems)
+        var finalTweetStr = ""
+        var i;
+        for (i = 0; i < listedItems.length; i++) {
+            //console.log(i)
+            //console.log(listedItems[i])
+            var currentItem = "<div class='mb-4'><h1>" + listedItems[i].id + "</h1>" + "<p>" + listedItems[i].content + "</p></div>"
+            finalTweetStr += currentItem
+        }
+        tweetElement.innerHTML = finalTweetStr //set html elmt
     }
     xhr.send()//trigger that request
 </script>
+
+{% endblock content %}
