@@ -16,14 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from tweets.views import home_view, tweet_detail_view
+from tweets.views import home_view, tweet_detail_view, tweet_list_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # @Anyi http://127.0.0.1:8000/
+    # @Anyi http://127.0.0.1:8000
     path("", home_view, name="home_view"),
     #####Dynamic URL#######
-    # @Anyi http://127.0.0.1:8000/tweet/1
-    # path("tweet/<int:tweet_id>", home_view, name="home_view"),
-    path("tweet/<int:tweet_id>/", tweet_detail_view, name="tweet_detail_view"),
+    # @Anyi http://127.0.0.1:8000/tweets/1
+    # path("tweets/<int:tweet_id>", home_view, name="home_view"),
+    path("tweets/<int:tweet_id>", tweet_detail_view, name="tweet_detail_view"),
+    # @Anyi http://127.0.0.1:8000/tweets
+    path("tweets", tweet_list_view, name="tweet_list_view"),
 ]
