@@ -25,6 +25,11 @@ Welcome to Tweetme 2
     const url = '/tweets' // http://127.0.0.1:8000/tweets 
     const responseType = "json"
 
+    function formatTweetElement(tweet) {
+        var formattedTweet = "<div class='mb-4 tweet' id='tweet-" + tweet.id + "'><p>" + tweet.content + "</p></div>"
+        return formattedTweet
+    }
+
     xhr.responseType = responseType
     xhr.open(method, url) //open up request with GET mtd and http://127.0.0.1:8000/tweets url
     xhr.onload = function () {//once it finishes loading logout the response that comes back from the request
@@ -36,8 +41,8 @@ Welcome to Tweetme 2
         for (i = 0; i < listedItems.length; i++) {
             //console.log(i)
             //console.log(listedItems[i])
-            var currentItem = "<div class='mb-4'><h1>" + listedItems[i].id + "</h1>" + "<p>" + listedItems[i].content + "</p></div>"
-            finalTweetStr += currentItem
+            //var currentItem = "<div class='mb-4'><h1>" + listedItems[i].id + "</h1>" + "<p>" + listedItems[i].content + "</p></div>"
+            finalTweetStr += formatTweetElement(listedItems[i])
         }
         tweetElement.innerHTML = finalTweetStr //set html elmt
     }
