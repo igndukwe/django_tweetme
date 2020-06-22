@@ -25,8 +25,22 @@ Welcome to Tweetme 2
     const url = '/tweets' // http://127.0.0.1:8000/tweets 
     const responseType = "json"
 
+    //handle button
+    function handleDidLike(tweet_id, currentCount) {
+        console.log(tweet_id, currentCount)
+    }
+
+    //create and return a like button
+    function likeBtn(tweet) {
+        return "<button class='btn btn-primary btn-sm' onclick=handleDidLike(" + tweet.id + "," + tweet.likes + ")>" + tweet.likes + "Like</button>"
+    }
+
+    //return a tweet
     function formatTweetElement(tweet) {
-        var formattedTweet = "<div class='mb-4 tweet' id='tweet-" + tweet.id + "'><p>" + tweet.content + "</p></div>"
+        var formattedTweet = "<div class='mb-4 tweet' id='tweet-" + tweet.id + "'>"
+            + "<p>" + tweet.content + "</p>"
+            + "<div class='btn-group'>" + likeBtn(tweet) + "</div>" +
+            "</div>"
         return formattedTweet
     }
 
