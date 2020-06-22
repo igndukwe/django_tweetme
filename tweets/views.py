@@ -2,7 +2,11 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render
 import random
 
+# @Anyi import your models here
 from .models import Tweet
+
+# @Anyi import your forms here
+from .forms import TweetForm
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
@@ -13,6 +17,17 @@ def home_view(request, *args, **kwargs):
     print(args, kwargs)
     # return HttpResponse(f"<H1>Hello World</h1>")
     return render(request, "pages/home.html", context={}, status=200)
+
+
+# @Anyi this view shows the form
+def tweet_create_view(request, *args, **kwargs):
+    form = TweetForm(request.POST or None)  # Initialize the form
+    if form.is_valid():
+        obj = form.save(commit=False)
+        # do ther form related logic
+        obj.save()  # save values to the database
+        form = TweetForm()  # @Anyi this resets the form
+    return render(request, "components/form.html", context={"form": form})
 
 
 def tweet_list_view(request, *args, **kwargs):

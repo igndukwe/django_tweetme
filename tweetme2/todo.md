@@ -4,6 +4,7 @@
         -> Image: Media Storage Server (of some kind)
     -> Deleting
     -> Retweeting
+    -> Liking
 
 2. Users
     -> Register
