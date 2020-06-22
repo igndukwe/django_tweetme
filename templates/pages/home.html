@@ -7,9 +7,14 @@ This is amazing!!!
 
 <!-- @Anyi replace this part into the content part of base.html-->
 {% block content %}
-Welcome to Tweetme 2
+<div class="row text-center">
+    <div class="col">
+        <h1>Welcome to Tweetme 2</h1>
+    </div>
+</div>
 
-<div id="tweets_div_id">
+
+<div class="row" id="tweets_div_id">
     Loading ...
 </div>
 
@@ -37,7 +42,7 @@ Welcome to Tweetme 2
 
     //return a tweet
     function formatTweetElement(tweet) {
-        var formattedTweet = "<div class='mb-4 tweet' id='tweet-" + tweet.id + "'>"
+        var formattedTweet = "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 tweet' id='tweet-" + tweet.id + "'>"
             + "<p>" + tweet.content + "</p>"
             + "<div class='btn-group'>" + likeBtn(tweet) + "</div>" +
             "</div>"
