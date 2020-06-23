@@ -60,8 +60,8 @@ This is amazing!!!
         //console.log(action, method)
 
         const xhr = new XMLHttpRequest() //instantiat
-        //const responseType = "json"
-        //xhr.responseType = responseType
+        const responseType = "json"
+        xhr.responseType = responseType
         //xhr.open(method, url)
         xhr.open(method, action)// in this case the url is same as action ->/create-tweet
         //hence the url is handled by the urls.py 
@@ -73,12 +73,15 @@ This is amazing!!!
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
 
         xhr.onload = function () {
-            const serverResponse = xhr.response
-            console.log(xhr.status, serverResponse)
-            //reload tweets after information has been added 
-            //so that we can see the new tweet that has been added
-            const tweetsEL = document.getElementById("tweets-div-id")
-            loadTweets(tweetsEL)
+
+            if (xhr.status === 201) {//201 created
+                const newTweet = xhr.response //server response
+                console.log(newTweet.likes)
+                const newTweetElement = formatTweetElement(newTweet)
+                console.log(newTweetElement)
+
+            }
+
         }
 
         xhr.send(myFormData)//send the form data because it is a POST 
@@ -93,7 +96,7 @@ This is amazing!!!
     //changes the text content in tweets-div-id
 
     //grabe html tag by id
-    const tweetsEL = document.getElementById("tweets-div-id") //get html elmt
+    const tweetsContainerElement = document.getElementById("tweets-div-id") //get html elmt
     //tweetsEL.innerHTML = 'Loading...'//set html elmt
 
     //const loadTweets = function() {}
@@ -123,7 +126,7 @@ This is amazing!!!
         xhr.send()//trigger that request, in this case the GET request
     }
 
-    loadTweets(tweetsEL)
+    loadTweets(tweetsContainerElement)
 
     //handle button
     function handleDidLike(tweet_id, currentCount) {
