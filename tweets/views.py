@@ -30,18 +30,19 @@ def tweet_create_view(request, *args, **kwargs):
     print("ajax", request.is_ajax())
     form = TweetForm(request.POST or None)  # Initialize the form
     # print("post data is", request.POST)
-    # next_url = request.POST.get("next") or None
+    next_url = request.POST.get("next") or None
     # print("next_url", next_url)
     if form.is_valid():
         obj = form.save(commit=False)
         # do ther form related logic
         obj.save()  # save values to the database
-        # if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
-        #   return back to the home page
-        #   return redirect(next_url)
+        #
         if request.is_ajax():
             # return back to the home page
-            return JsonResponse({}, status=201)  # 201 == created items
+            return JsonResponse(obj.serialize(), status=201)  # 201 == created items
+        if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
+            # return back to the home page
+            return redirect(next_url)
         # else if it is not a safe url then return a form page
         form = TweetForm()  # @Anyi this resets the form
     return render(request, "components/form.html", context={"form": form})
@@ -56,9 +57,12 @@ def tweet_list_view(request, *args, **kwargs):
     """
 
     qs = Tweet.objects.all()
-    tweets_list = [
-        {"id": x.id, "content": x.content, "likes": random.randint(0, 129)} for x in qs
-    ]
+    # tweets_list = [
+    #    {"id": x.id, "content": x.content, "likes": random.randint(0, 129)} for x in qs
+    # ]
+
+    # @Anyi use this line of code instead of the above line
+    tweets_list = [x.serialize() for x in qs]
 
     data = {"isUser": False, "tweet_list_response": tweets_list}
     # @Anyi this is a new way of returning our data

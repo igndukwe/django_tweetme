@@ -1,4 +1,5 @@
 from django.db import models
+import random
 
 # Create your models here.
 class Tweet(models.Model):
@@ -8,3 +9,7 @@ class Tweet(models.Model):
     # @Anyi a path to the image is what is stored in the database
     # and not the actual image
     image = models.FileField(upload_to="images/", blank=True, null=True)
+
+    def serialize(self):
+        # return dictionary here
+        return {"id": self.id, "content": self.content, "likes": random.randint(0, 200)}
