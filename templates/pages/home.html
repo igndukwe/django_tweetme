@@ -67,9 +67,14 @@ This is amazing!!!
         //hence the url is handled by the urls.py 
         //which calls the tweet_create_view() mtd in the views.py
 
+        //For Ajax to work with Django 
+        // and to set HttpRequest.is_ajax() to true in the tweet_create_view() mtd views.py
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+
         xhr.onload = function () {
             const serverResponse = xhr.response
-            //console.log(serverResponse)
+            //console.log(xhr.status, serverResponse)
             //reload tweets after information has been added 
             //so that we can see the new tweet that has been added
             const tweetsEL = document.getElementById("tweets-div-id")

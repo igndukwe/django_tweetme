@@ -27,17 +27,21 @@ def home_view(request, *args, **kwargs):
 
 # @Anyi this view shows the form
 def tweet_create_view(request, *args, **kwargs):
+    print("ajax", request.is_ajax())
     form = TweetForm(request.POST or None)  # Initialize the form
     # print("post data is", request.POST)
-    next_url = request.POST.get("next") or None
-    print("next_url", next_url)
+    # next_url = request.POST.get("next") or None
+    # print("next_url", next_url)
     if form.is_valid():
         obj = form.save(commit=False)
         # do ther form related logic
         obj.save()  # save values to the database
-        if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
+        # if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
+        #   return back to the home page
+        #   return redirect(next_url)
+        if request.is_ajax():
             # return back to the home page
-            return redirect(next_url)
+            return JsonResponse({}, status=201)  # 201 == created items
         # else if it is not a safe url then return a form page
         form = TweetForm()  # @Anyi this resets the form
     return render(request, "components/form.html", context={"form": form})
