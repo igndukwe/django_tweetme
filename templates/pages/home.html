@@ -19,6 +19,7 @@ This is amazing!!!
             {%csrf_token%}
             <!--I want my input type to be redirected to the homepage no matter what-->
             <input type='hidden' value='/' name='next' />
+            <!--input type='hidden' value='/this-is-not-a-real-page' name='next' /-->
             <textarea class='form-control' name='content' placeholder='Your tweet...'></textarea>
             <button type='submit' class='btn btn-primary'>Tweet</button>
         </form>
@@ -34,8 +35,49 @@ This is amazing!!!
 
     //
     function handleTweetCreateFormDidSubmit(event) {
-        event.preventDefault()//prevent form submiting to the endpoint
-        console.log(event)
+        event.preventDefault()//prevent form submiting to the endpoint we set for the form
+        //see event output from the console
+        //console.log(event)
+
+        const myForm = event.target
+
+        //this is related to forms 
+        const myFormData = new FormData(myForm)
+
+        // form data is in form of key/value pairs
+        //for (var myItem of myFormData.entries()) {
+        //    console.log(myItem)
+        //}
+
+        //Lets use this to figure out where form data will be sent 
+        // by getting the 'action' attribute of the form
+        const action = myForm.getAttribute("action") //action holds url 
+        //console.log(action)
+
+        //get the 'method' attribute of the form
+        const method = myForm.getAttribute("method")
+        //console.log(method)
+        //console.log(action, method)
+
+        const xhr = new XMLHttpRequest() //instantiat
+        //const responseType = "json"
+        //xhr.responseType = responseType
+        //xhr.open(method, url)
+        xhr.open(method, action)// in this case the url is same as action ->/create-tweet
+        //hence the url is handled by the urls.py 
+        //which calls the tweet_create_view() mtd in the views.py
+
+        xhr.onload = function () {
+            const serverResponse = xhr.response
+            //console.log(serverResponse)
+            //reload tweets after information has been added 
+            //so that we can see the new tweet that has been added
+            const tweetsEL = document.getElementById("tweets-div-id")
+            loadTweets(tweetsEL)
+        }
+
+        xhr.send(myFormData)//send the form data because it is a POST 
+
     }
 
     //grabe html tag by id
@@ -73,7 +115,7 @@ This is amazing!!!
             }
             tweetElement.innerHTML = finalTweetStr //set html elmt
         }
-        xhr.send()//trigger that request
+        xhr.send()//trigger that request, in this case the GET request
     }
 
     loadTweets(tweetsEL)
