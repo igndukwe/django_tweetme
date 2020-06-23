@@ -20,7 +20,7 @@ This is amazing!!!
             <!--I want my input type to be redirected to the homepage no matter what-->
             <input type='hidden' value='/' name='next' />
             <!--input type='hidden' value='/this-is-not-a-real-page' name='next' /-->
-            <textarea class='form-control' name='content' placeholder='Your tweet...'></textarea>
+            <textarea required='required' class='form-control' name='content' placeholder='Your tweet...'></textarea>
             <button type='submit' class='btn btn-primary'>Tweet</button>
         </form>
     </div>
@@ -79,6 +79,13 @@ This is amazing!!!
                 console.log(newTweet.likes)
                 const newTweetElement = formatTweetElement(newTweet)
                 console.log(newTweetElement)
+
+                //Make newest tweets appear at the top
+                const tempHtml = tweetsContainerElement.innerHTML
+                tweetsContainerElement.innerHTML = newTweetElement + tempHtml
+
+                //reset the form to blank after saving document
+                myForm.reset()
 
             }
 

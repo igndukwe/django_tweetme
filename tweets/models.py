@@ -10,6 +10,12 @@ class Tweet(models.Model):
     # and not the actual image
     image = models.FileField(upload_to="images/", blank=True, null=True)
 
+    # order model in decending odder
+    # so that when you refresh your html page
+    # you see the most resent ones on top
+    class Meta:
+        ordering = ["-id"]
+
     def serialize(self):
         # return dictionary here
         return {"id": self.id, "content": self.content, "likes": random.randint(0, 200)}
