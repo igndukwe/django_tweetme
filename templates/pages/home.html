@@ -15,7 +15,7 @@ This is amazing!!!
 
 <div class="row mb-3">
     <div class='col-md-4 mx-auto col-10'>
-        <form class='form' method='POST' action='/create-tweet'>
+        <form class='form' id='tweet-create-form-id' method='POST' action='/create-tweet'>
             {%csrf_token%}
             <!--I want my input type to be redirected to the homepage no matter what-->
             <input type='hidden' value='/' name='next' />
@@ -25,21 +25,58 @@ This is amazing!!!
     </div>
 </div>
 
-<div class="row" id="tweets_div_id">
+<div class="row" id="tweets-div-id">
     Loading ...
 </div>
 
 <!-- @Anyi I want my page to automatically trigger a reload-->
 <script>
-    //const never changes, var and let can change
-    //change the text content in tweets_div_id
-    const tweetElement = document.getElementById("tweets_div_id") //get html elmt
-    //tweetElement.innerHTML = 'Loading...'//set html elmt
 
-    const xhr = new XMLHttpRequest() //instantiat
-    const method = 'GET'//POST
-    const url = '/tweets' // http://127.0.0.1:8000/tweets 
-    const responseType = "json"
+    //
+    function handleTweetCreateFormDidSubmit(event) {
+        event.preventDefault()//prevent form submiting to the endpoint
+        console.log(event)
+    }
+
+    //grabe html tag by id
+    const tweetCreateFormEl = document.getElementById("tweet-create-form-id")
+    tweetCreateFormEl.addEventListener("submit", handleTweetCreateFormDidSubmit)
+
+    //const never changes, var and let can change
+    //changes the text content in tweets-div-id
+
+    //grabe html tag by id
+    const tweetsEL = document.getElementById("tweets-div-id") //get html elmt
+    //tweetsEL.innerHTML = 'Loading...'//set html elmt
+
+    //const loadTweets = function() {}
+    function loadTweets(tweetElement) {
+
+        const xhr = new XMLHttpRequest() //instantiat
+        const method = 'GET'//POST
+        const url = '/tweets' // http://127.0.0.1:8000/tweets 
+        const responseType = "json"
+
+        xhr.responseType = responseType
+        xhr.open(method, url) //open up request with GET mtd and http://127.0.0.1:8000/tweets url
+        xhr.onload = function () {//once it finishes loading logout the response that comes back from the request
+            const serverResponse = xhr.response
+            const listedItems = serverResponse.tweet_list_response
+            //console.log(listedItems)
+            var finalTweetStr = ""
+            var i;
+            for (i = 0; i < listedItems.length; i++) {
+                //console.log(i)
+                //console.log(listedItems[i])
+                //var currentItem = "<div class='mb-4'><h1>" + listedItems[i].id + "</h1>" + "<p>" + listedItems[i].content + "</p></div>"
+                finalTweetStr += formatTweetElement(listedItems[i])
+            }
+            tweetElement.innerHTML = finalTweetStr //set html elmt
+        }
+        xhr.send()//trigger that request
+    }
+
+    loadTweets(tweetsEL)
 
     //handle button
     function handleDidLike(tweet_id, currentCount) {
@@ -60,23 +97,7 @@ This is amazing!!!
         return formattedTweet
     }
 
-    xhr.responseType = responseType
-    xhr.open(method, url) //open up request with GET mtd and http://127.0.0.1:8000/tweets url
-    xhr.onload = function () {//once it finishes loading logout the response that comes back from the request
-        const serverResponse = xhr.response
-        const listedItems = serverResponse.tweet_list_response
-        //console.log(listedItems)
-        var finalTweetStr = ""
-        var i;
-        for (i = 0; i < listedItems.length; i++) {
-            //console.log(i)
-            //console.log(listedItems[i])
-            //var currentItem = "<div class='mb-4'><h1>" + listedItems[i].id + "</h1>" + "<p>" + listedItems[i].content + "</p></div>"
-            finalTweetStr += formatTweetElement(listedItems[i])
-        }
-        tweetElement.innerHTML = finalTweetStr //set html elmt
-    }
-    xhr.send()//trigger that request
+
 </script>
 
 {% endblock content %}
