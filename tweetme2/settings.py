@@ -25,7 +25,7 @@ SECRET_KEY = "olc(h8zlft!#g(lze#fzpm#)j@a@594o$q9_7tn%p4c**u^^@q"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "cfe.sh"]
 
 
 # Application definition
