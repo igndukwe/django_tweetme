@@ -17,6 +17,7 @@ This is amazing!!!
     <div class='col-md-4 mx-auto col-10'>
         <form class='form' id='tweet-create-form-id' method='POST' action='/create-tweet'>
             {%csrf_token%}
+            <div class='d-none alart alart-danger' id='tweet-create-form-error-id'></div>
             <!--I want my input type to be redirected to the homepage no matter what-->
             <input type='hidden' value='/' name='next' />
             <!--input type='hidden' value='/this-is-not-a-real-page' name='next' /-->
@@ -33,6 +34,19 @@ This is amazing!!!
 <!-- @Anyi I want my page to automatically trigger a reload-->
 <script>
 
+    function handleTweetFormatError(msg, display) {
+        var myErrorDiv = document.getElementById("tweet-create-form-error-id")
+        if (display === true) {
+            // show error
+            //set the alart classes to show
+            myErrorDiv.setAttribute("class", "d-block alert alert-danger")
+            myErrorDiv.innerText = msg
+        } else {
+            //hide error
+            //set the alart classes to show
+            myErrorDiv.setAttribute("class", "d-none alert alert-danger")
+        }
+    }
     //
     function handleTweetCreateFormDidSubmit(event) {
         event.preventDefault()//prevent form submiting to the endpoint we set for the form
@@ -75,10 +89,11 @@ This is amazing!!!
         xhr.onload = function () {
 
             if (xhr.status === 201) {//201 created
+                handleTweetFormatError('contentErrorMsg', false)
                 const newTweet = xhr.response //server response
-                console.log(newTweet.likes)
+                //console.log(newTweet.likes)
                 const newTweetElement = formatTweetElement(newTweet)
-                console.log(newTweetElement)
+                //console.log(newTweetElement)
 
                 //Make newest tweets appear at the top
                 const tempHtml = tweetsContainerElement.innerHTML
@@ -88,7 +103,20 @@ This is amazing!!!
                 myForm.reset()
             } else if (xhr.status === 400) {
                 const errorJson = xhr.response
-                console.log(errorJson)
+                const contentError = errorJson.content
+                let contentErrorMsg;
+                //console.log(errorJson)
+                if (errorJson) {
+                    contentErrorMsg = contentError[0]
+                    if (contentErrorMsg) {
+                        handleTweetFormatError(contentErrorMsg, true)
+                    } else {
+                        alert("An error occured again please try again")
+                    }
+                } else {
+                    alert("An error occured again please try again")
+                }
+                console.log(contentErrorMsg)
             } else if (xhr.status === 500) {
                 alert("There was a server error, please try again.")
             }
