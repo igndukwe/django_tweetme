@@ -1,8 +1,14 @@
 from django.db import models
+from django.conf import settings
+
 import random
+
+# @Anyi Django has a built in User autentication
+User = settings.AUTH_USER_MODEL
 
 # Create your models here.
 class Tweet(models.Model):
+
     # id = models.AutoField(primary_key=True) #default
     # @Anyi both content and image are not required fields
     content = models.TextField(blank=True, null=True)
@@ -19,3 +25,10 @@ class Tweet(models.Model):
     def serialize(self):
         # return dictionary here
         return {"id": self.id, "content": self.content, "likes": random.randint(0, 200)}
+
+    # @Assign Each user a foriegn key
+    # one single user can own one tweet as well as many tweets
+    # on the other hand one tweet can only have one user
+    # CASCADE means if the owner is deleted all of the Tweets are deleted
+    # SET_NULL means if the owner is deleted all of the Tweets are kept
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
