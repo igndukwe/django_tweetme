@@ -35,5 +35,5 @@ class Tweet(models.Model):
     # on the other hand one tweet can only have one user
     # CASCADE means if the owner is deleted all of the Tweets are deleted
     # SET_NULL means if the owner is deleted all of the Tweets are kept
-    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 

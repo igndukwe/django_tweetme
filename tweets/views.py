@@ -28,6 +28,15 @@ def home_view(request, *args, **kwargs):
 
 # @Anyi this view shows the form
 def tweet_create_view(request, *args, **kwargs):
+    user = request.user
+
+    # @Anyi also go to settings.py and add LOGIN_URL = "/login"
+    if not request.user.is_authenticated:
+        user = None
+        if request.is_ajax():
+            return JsonResponse({}, status=401)
+        return redirect(settings.LOGIN_URL)
+
     # print("ajax", request.is_ajax())
 
     form = TweetForm(request.POST or None)  # Initialize the form
@@ -36,6 +45,12 @@ def tweet_create_view(request, *args, **kwargs):
     # print("next_url", next_url)
     if form.is_valid():
         obj = form.save(commit=False)
+
+        # @Anyi after adding the user login
+        # so the none is if user is not authenticated
+        # obj.user = request.user or None  # Anonymous User will default to none
+        obj.user = user
+
         # do ther form related logic
         obj.save()  # save values to the database
         # make sure it is ajax request
