@@ -117,6 +117,9 @@ This is amazing!!!
                     alert("An error occured again please try again")
                 }
                 console.log(contentErrorMsg)
+            } else if (xhr.status === 401) {
+                alert("You must loagin.")
+                window.location.href = "/login"
             } else if (xhr.status === 500) {
                 alert("There was a server error, please try again.")
             }
