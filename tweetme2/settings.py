@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Add my app
     "tweets",
+    # Add third party
+    rest_framework,
 ]
 
 MIDDLEWARE = [
