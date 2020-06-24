@@ -16,6 +16,10 @@ class Tweet(models.Model):
     # and not the actual image
     image = models.FileField(upload_to="images/", blank=True, null=True)
 
+    # @Anyi to change the defult 'Tweet object(31)' to return say content
+    def __str__(self):
+        return self.content
+
     # order model in decending odder
     # so that when you refresh your html page
     # you see the most resent ones on top
@@ -31,4 +35,5 @@ class Tweet(models.Model):
     # on the other hand one tweet can only have one user
     # CASCADE means if the owner is deleted all of the Tweets are deleted
     # SET_NULL means if the owner is deleted all of the Tweets are kept
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
+

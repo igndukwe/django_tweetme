@@ -20,7 +20,8 @@ def home_view(request, *args, **kwargs):
     # args -->() kwargs -->{'tweet_id': 123}
     # >hence tweet_id declared as <int:tweet_id> from the urls.py bcoms the key here
     # >while the 123 from the http://127.0.0.1:8000/tweet/123 bcoms value
-    print(args, kwargs)
+    # print(args, kwargs)
+    print(request.user)
     # return HttpResponse(f"<H1>Hello World</h1>")
     return render(request, "pages/home.html", context={}, status=200)
 
