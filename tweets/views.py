@@ -4,7 +4,13 @@ from django.utils.http import is_safe_url
 
 # @Anyi we will now use this REST Response rather than the django HttpResponse or JsonResponse
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
 
 
 from django.conf import settings
@@ -35,9 +41,13 @@ def home_view(request, *args, **kwargs):
 
 
 # @anyi this view shows the REST serialize rather than the form
-# pass list of methods you want to support,
-# for this case it must be a POST request
-@api_view(["POST"])
+@api_view(
+    ["POST"]
+)  # this are called decorator classess, pass list of methods you want to support,e.g. this mtd accepts a POST request
+# @authentication_classes([SessionAuthentication, MyCustomAut])# users permission
+@permission_classes(
+    [IsAuthenticated]
+)  # pass list of permisions e.g. IsAuthenticated means if users are authenticated then they have access to this form else they do not
 def tweet_create_view(request, *args, **kwargs):
 
     # call serialiser and pass in the data
