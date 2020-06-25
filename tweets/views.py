@@ -67,11 +67,29 @@ def tweet_detail_view(request, tweet_id, *args, **kwargs):
     qs = Tweet.objects.filter(id=tweet_id)
     if not qs.exists():
         return Response({}, status=404)
+
     # get a single objects
     obj = qs.first()
     # pass in a single object to TweetSerializer
     serializer = TweetSerializer(obj)
     return Response(serializer.data)
+
+
+@api_view(["DELETE", "POST"])  # you can use DELETE  or POST
+@permission_classes([IsAuthenticated])  # checks if user can delete
+def tweet_delete_view(request, tweet_id, *args, **kwargs):
+    qs = Tweet.objects.filter(id=tweet_id)
+    if not qs.exists():
+        return Response({}, status=404)
+
+    qs = qs.filter(user=request.user)
+    if not qs.exists():
+        return Response({"message": "You cannot delete"}, status=401)
+
+    # get a single objects
+    obj = qs.first()
+    obj.delete()
+    return Response({"message": "Tweet removed"}, status=200)
 
 
 @api_view(["GET"])
