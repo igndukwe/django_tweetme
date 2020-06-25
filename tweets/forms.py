@@ -4,7 +4,7 @@ from .models import Tweet
 
 
 class TweetForm(forms.ModelForm):
-
+    # @Anyi Move this to the settings because we may want to use it globally
     MAX_TWEET_LENGTH = 240
     # @Anyi declear fields here for extra adjustment
 

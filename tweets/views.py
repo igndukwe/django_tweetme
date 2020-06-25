@@ -12,6 +12,9 @@ from .models import Tweet
 # @Anyi import your forms here
 from .forms import TweetForm
 
+# @Anyi import your REST serializers here which can replace forms
+from .serializers import TweetSerializer
+
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 # Create your views here.
@@ -26,8 +29,21 @@ def home_view(request, *args, **kwargs):
     return render(request, "pages/home.html", context={}, status=200)
 
 
-# @Anyi this view shows the form
+# @anyi this view shows the REST serialize rather than the form
 def tweet_create_view(request, *args, **kwargs):
+
+    # call serialiser and pass in the data
+    serializer = TweetSerializer(data=request.POST or None)
+    print(serializer.is_valid())
+    if serializer.is_valid():
+        # serializer.save(user=request.user, content='abc') if you want to change the content to abc
+        obj = serializer.save(user=request.user)
+        return JsonResponse(serializer.data, status=201)
+    return JsonResponse({}, status=400)
+
+
+# @Anyi this view shows the form
+def tweet_create_view_pure_django(request, *args, **kwargs):
     user = request.user
 
     # @Anyi also go to settings.py and add LOGIN_URL = "/login"
