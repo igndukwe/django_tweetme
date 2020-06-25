@@ -37,11 +37,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Add my app
+    # Add third-party app
+    "rest_framework",
+    # Add my internal app
     "tweets",
-    # Add third party
-    rest_framework,
 ]
+MAX_TWEET_LENGTH = 240
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
