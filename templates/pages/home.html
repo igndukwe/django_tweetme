@@ -156,7 +156,8 @@ This is amazing!!!
         xhr.open(method, url) //open up request with GET mtd and http://127.0.0.1:8000/tweets url
         xhr.onload = function () {//once it finishes loading logout the response that comes back from the request
             const serverResponse = xhr.response
-            const listedItems = serverResponse.tweet_list_response
+            //const listedItems = serverResponse.tweet_list_response
+            const listedItems = serverResponse //REST
             //console.log(listedItems)
             var finalTweetStr = ""
             var i;
