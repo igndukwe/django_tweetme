@@ -36,7 +36,8 @@ class Tweet(models.Model):
     # This allows to add individual users to the likes
     # >It is similar to ForeignKey,
     # but the difference is that I can have a list of users here Vs. One User in the FK
-    # > we do not hae to add the through=TweetLike
+    # > through=TweetLike creates an instance of the timestamp
+    # we do not hae to add the through=TweetLike
     # all it does is that it adds a timestamp a tweet was liked
     # to the many to many reference
     # this will be good to keeptrack of what users liked over time
@@ -62,4 +63,69 @@ class Tweet(models.Model):
     # return dictionary here in a serialized format (this is the old way)
     def serialize(self):
         return {"id": self.id, "content": self.content, "likes": random.randint(0, 200)}
+
+
+# @Anyi How to access this model
+# e.g.
+# @Anyi get all the tweet likes
+# TweetLike.objects.all()
+# @Anyi delete all the tweet likes
+# TweetLike.objects.all().delete()
+
+# @Anyi call the first tweet
+# obj = Tweet.objects.first()
+# access all the likes by that tweet (becos its many to many field)
+# obj.likes.all()
+
+# @Anyi we can also import the default User model
+# from django.contrib.auth import get_user_model
+# instantiate the user model
+# user = get_user_model()
+# Get all the users
+# user.objects.all()
+# Get the first user
+# me = user.objects.first()
+# me
+
+# 1
+# @Anyi we can now make the me user to like a tweet
+# obj.likes.add(me)
+# see the uses that have liked a tweet
+# obj.likes.all()
+# to unlike
+# obj.likes.remove(me)
+# see that the user is gone
+# obj.likes.all()
+
+# @Anyi notice that all users can also like a tweet (Many to Many)
+# get all the users
+# qs = user.objects.all()
+# get all users to like a tweet
+# obj.likes.set(qs)
+# see that all the users have liked the tweet
+# obj.likes.all()
+
+# @Anyi we can also see the timestamp a tweet was liked
+# e.g. lets see the timestamp the first tweet was liked
+# TweetLike.objects.first().timestamp
+
+# lets delete all tweets associated with the me user
+# obj.likes.remove(me)
+# check to see, since its only one user for now
+# obj.likes.all()
+
+
+# 2.
+# @Anyi another way to make a user like a tweet
+# TweetLike.objects.create(user=me, tweet=obj)
+# check
+# obj.likes.all()
+
+# 3.
+# @Anyi you can also add an empty set (this deletes a group of user likes/ or provides a way to filter)
+# empty_users = user.objects.none()
+# empty_users
+# empty the likes
+# obj.likes.set(empty_users)
+# obj.likes.all()
 
