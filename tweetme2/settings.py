@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     # Add my internal app
     "tweets",
 ]
+
+# @Anyi my added variables
 MAX_TWEET_LENGTH = 240
+TWEET_ACTION_OPTIONS = ["like", "unlike", "retweet"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

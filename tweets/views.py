@@ -24,7 +24,7 @@ from .models import Tweet
 from .forms import TweetForm
 
 # @Anyi import your REST serializers here which can replace forms
-from .serializers import TweetSerializer
+from .serializers import TweetSerializer, TweetActionSerializer
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
@@ -89,6 +89,63 @@ def tweet_delete_view(request, tweet_id, *args, **kwargs):
     # get a single objects
     obj = qs.first()
     obj.delete()
+    return Response({"message": "Tweet removed"}, status=200)
+
+
+@api_view(["POST"])  # you can use DELETE  or POST
+@permission_classes([IsAuthenticated])  # is user authenticated
+def tweet_like_action_view(request, *args, **kwargs):
+    """
+    id is required.
+    Action options are: like, unlike, retweet
+    """
+    serializer = TweetActionSerializer(request.POST)  # post the data here
+    if serializer.is_valid(raise_exception=True):
+        # @Anyi data comming in here is actually a validated data
+        data = serializer.validated_data
+        tweet_id = data.get("id")
+        action = data.get("action")
+
+        # @Anyi filter tweet by id
+        qs = Tweet.objects.filter(id=tweet_id)
+        if not qs.exists():
+            return Response({}, status=404)
+
+        # @Anyi get a single objects
+        obj = qs.first()
+
+        if action == "like":
+            obj.likes.remove(request.user)
+        elif action == "unlike":
+            obj.likes.add(request.user)
+        elif action == "retweet":
+            # todo
+            pass
+
+    return Response({"message": "Tweet removed"}, status=200)
+
+
+@api_view(["POST"])  # you can use DELETE  or POST
+@permission_classes([IsAuthenticated])  # is user authenticated
+def tweet_like_toggle_view(request, tweet_id, *args, **kwargs):
+    # @Anyi filter tweet by id
+    qs = Tweet.objects.filter(id=tweet_id)
+    if not qs.exists():
+        return Response({}, status=404)
+
+    # @Anyi get a single objects
+    obj = qs.first()
+
+    # @toggle
+    if request.user in obj.likes.all():
+        # remove it
+        # @Anyi make User to unlike Tweet
+        obj.likes.remove(request.user)
+    else:
+        # add it
+        # @Anyi make User to like Tweet
+        obj.likes.add(request.user)
+
     return Response({"message": "Tweet removed"}, status=200)
 
 

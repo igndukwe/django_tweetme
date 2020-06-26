@@ -65,6 +65,7 @@ class Tweet(models.Model):
         return {"id": self.id, "content": self.content, "likes": random.randint(0, 200)}
 
 
+#####   TweetLike   ####
 # @Anyi How to access this model
 # e.g.
 # @Anyi get all the tweet likes
@@ -72,11 +73,13 @@ class Tweet(models.Model):
 # @Anyi delete all the tweet likes
 # TweetLike.objects.all().delete()
 
+#####   Tweet   ####
 # @Anyi call the first tweet
 # obj = Tweet.objects.first()
 # access all the likes by that tweet (becos its many to many field)
 # obj.likes.all()
 
+#####   User   ####
 # @Anyi we can also import the default User model
 # from django.contrib.auth import get_user_model
 # instantiate the user model
