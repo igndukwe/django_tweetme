@@ -94,12 +94,12 @@ def tweet_delete_view(request, tweet_id, *args, **kwargs):
 
 @api_view(["POST"])  # you can use DELETE  or POST
 @permission_classes([IsAuthenticated])  # is user authenticated
-def tweet_like_action_view(request, *args, **kwargs):
+def tweet_action_view(request, *args, **kwargs):
     """
     id is required.
     Action options are: like, unlike, retweet
     """
-    serializer = TweetActionSerializer(request.POST)  # post the data here
+    serializer = TweetActionSerializer(data=request.POST)  # post the data here
     if serializer.is_valid(raise_exception=True):
         # @Anyi data comming in here is actually a validated data
         data = serializer.validated_data

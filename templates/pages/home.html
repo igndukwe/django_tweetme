@@ -180,6 +180,30 @@ This is amazing!!!
     //handle button
     function handleDidLike(tweet_id, currentCount) {
         console.log(tweet_id, currentCount)
+        const url = "/api/tweets/action"
+        const method = "POST"
+        //stringify this to convert it to a JSON dictionary
+        const data = JSON.stringify({
+            id: tweet_id,
+            action: "like"
+        })
+
+        const xhr = new XMLHttpRequest()
+        xhr.open(method, url)
+
+        //    SET HEADERS
+        //For Ajax to work with Django 
+        // and to set HttpRequest.is_ajax() to true in the tweet_create_view() mtd views.py
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        //we need to have this header
+        xhr.setRequestHeader("Content-Type", "application/json")
+
+        xhr.onload = function () {
+            console.log(xhr.status, xhr.response)
+        }
+
+        return
     }
 
     //create and return a like button

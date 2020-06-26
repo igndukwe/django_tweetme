@@ -27,9 +27,16 @@ class TweetActionSerializer(serializers.Serializer):
 
 # @Anyi make a serialiser for Tweets
 class TweetSerializer(serializers.ModelSerializer):
+
+    likes = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Tweet
-        fields = ["content"]
+        fields = ["id", "content", "likes"]  # i want to change likes to numbers
+
+    # @Anyi this counts the number of likes
+    def get_likes(self, obj):
+        return obj.likes.count()
 
     # @Anyi this method is similar to the form, however use validate__fieldname rather than clean_fieldname
     # @Anyi enter validate and the name the field you want to calidate
