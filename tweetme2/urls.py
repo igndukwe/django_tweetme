@@ -42,8 +42,6 @@ urlpatterns = [
     path(
         "api/tweets/<int:tweet_id>/delete", tweet_delete_view, name="tweet_delete_view"
     ),
-    # @Anyi http://127.0.0.1:8000/api/tweets/1/action
-    path(
-        "api/tweets/<int:tweet_id>/action", tweet_action_view, name="tweet_action_view"
-    ),
+    # @Anyi http://127.0.0.1:8000/api/tweets/action
+    path("api/tweets/action", tweet_action_view, name="tweet_action_view"),
 ]
