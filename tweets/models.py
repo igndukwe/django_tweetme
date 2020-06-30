@@ -22,7 +22,8 @@ class Tweet(models.Model):
     # @Anyi id is there by default
     # id = models.AutoField(primary_key=True)
 
-    #####Only One User Can Own A Tweet#####
+    #####    ONE TO MANY    #######
+    # Only One User Can Own A Tweet
     # @Anyi assign each user a foriegn key
     # one single user can own one tweet as well as many tweets
     # on the other hand one tweet can only have one user
@@ -30,7 +31,17 @@ class Tweet(models.Model):
     # >SET_NULL means if the owner is deleted all of the Tweets are kept
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    #####Many Users Can like A Tweet#####
+    ######    SELF REFERENCE    ############
+    # @Anyi The idea of Tweet having a FK that references its self
+    # This is the idea that a user can retweet itself,
+    # in some cases they can have comments there
+    # > use "self" to seference the same model
+    # models.SET_NULL means when this field is deleted do not delete its references rather set to null
+    # Hence by default a Tweet will never have a parent except it is retweeted
+    parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)
+
+    #####    MANY TO MANY    #######
+    # Many Users Can like A Tweet
     # @Anyi create a likes field with a Many to Many relationship
     # i.e. One tweet can have Many users and Many users can have One tweet
     # This allows to add individual users to the likes

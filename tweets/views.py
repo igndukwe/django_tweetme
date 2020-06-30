@@ -123,35 +123,13 @@ def tweet_action_view(request, *args, **kwargs):
         elif action == "unlike":
             obj.likes.remove(request.user)
         elif action == "retweet":
-            # todo
-            pass
+            parent_obj = obj
+            new_tweet = Tweet.objects.create(user=request.user, parent=parent_obj)
+            serializer = TweetSerializer(new_tweet)
+            return Response(serializer.data, status=200)
 
     # return Response({"message": "Tweet liked"}, status=200)
     return Response({}, status=200)
-
-
-@api_view(["POST"])  # you can use DELETE  or POST
-@permission_classes([IsAuthenticated])  # is user authenticated
-def tweet_like_toggle_view(request, tweet_id, *args, **kwargs):
-    # @Anyi filter tweet by id
-    qs = Tweet.objects.filter(id=tweet_id)
-    if not qs.exists():
-        return Response({}, status=404)
-
-    # @Anyi get a single objects
-    obj = qs.first()
-
-    # @toggle
-    if request.user in obj.likes.all():
-        # remove it
-        # @Anyi make User to unlike Tweet
-        obj.likes.remove(request.user)
-    else:
-        # add it
-        # @Anyi make User to like Tweet
-        obj.likes.add(request.user)
-
-    return Response({"message": "Tweet removed"}, status=200)
 
 
 @api_view(["GET"])

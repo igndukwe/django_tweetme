@@ -25,3 +25,19 @@ Long term todos
 - Notifications
 - DM
 - Explore --> finding hashtags
+
+
+Idea of Retweeting
+==================
+Comment (parent)
+    Reply
+        Sub-Reply
+        Sub-Reply
+    Reply
+    Replay
+
+Tweet
+    Retweet
+        Retweet of Retweet
+
+Even though it presents the newest first but this is the general idea

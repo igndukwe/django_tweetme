@@ -206,10 +206,10 @@ This is amazing!!!
         })
 
         const xhr = new XMLHttpRequest()
-        const csrftoken = getCookie('csrftoken');
+        const csrftoken = getCookie('csrftoken'); //you can use this anywhere
         xhr.open(method, url)
 
-        //    SET HEADERS
+        //    SET HEADERS including the CSRFT token
 
         xhr.setRequestHeader("Content-Type", "application/json")
         xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
