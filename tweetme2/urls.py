@@ -37,11 +37,11 @@ urlpatterns = [
     path("tweets", tweet_list_view, name="tweet_list_view"),
     # @Anyi http://127.0.0.1:8000/create-tweet
     path("create-tweet", tweet_create_view, name="tweet_create_view"),
-    # @Anyi http://127.0.0.1:8000/api/tweets/1/delete
+    # @Anyi http://127.0.0.1:8000/tweets/1/delete
     # api means that we are appending the REST API
     path(
         "api/tweets/<int:tweet_id>/delete", tweet_delete_view, name="tweet_delete_view"
     ),
-    # @Anyi http://127.0.0.1:8000/api/tweets/action
+    # @Anyi http://127.0.0.1:8000/tweets/action
     path("api/tweets/action", tweet_action_view, name="tweet_action_view"),
 ]

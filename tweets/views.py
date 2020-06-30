@@ -24,7 +24,7 @@ from .models import Tweet
 from .forms import TweetForm
 
 # @Anyi import your REST serializers here which can replace forms
-from .serializers import TweetSerializer, TweetActionSerializer
+from .serializers import TweetSerializer, TweetActionSerializer, TweetCreateSerializer
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
@@ -40,6 +40,9 @@ def home_view(request, *args, **kwargs):
     return render(request, "pages/home.html", context={}, status=200)
 
 
+###########################################
+#######         NEW VIEWS           #######
+###########################################
 # @anyi this view shows the REST serialize rather than the form
 @api_view(
     ["POST"]
@@ -52,7 +55,7 @@ def tweet_create_view(request, *args, **kwargs):
 
     # call serialiser and pass in the data
     # serializer = TweetSerializer(data=request.POST or None)#We no longer need this since the decorator ensures that
-    serializer = TweetSerializer(data=request.POST)
+    serializer = TweetCreateSerializer(data=request.POST)
 
     # raise_exception handles the try and
     if serializer.is_valid(raise_exception=True):
@@ -107,9 +110,11 @@ def tweet_action_view(request, *args, **kwargs):
         data = serializer.validated_data
         tweet_id = data.get("id")
         action = data.get("action")
+        content = data.get("content")
 
         # @Anyi filter tweet by id
         qs = Tweet.objects.filter(id=tweet_id)
+
         if not qs.exists():
             return Response({}, status=404)
 
@@ -141,6 +146,9 @@ def tweet_list_view(request, *args, **kwargs):
     return Response(serializer.data)
 
 
+###########################################
+#######         OLD VIEWS           #######
+###########################################
 # @Anyi this view shows the form
 def tweet_create_view_pure_django(request, *args, **kwargs):
     user = request.user

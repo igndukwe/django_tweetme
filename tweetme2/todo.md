@@ -4,6 +4,8 @@
         -> Image: Media Storage Server (of some kind)
     -> Deleting
     -> Retweeting
+        -> Read only serializer
+        -> Create only serialiser
     -> Liking
 
 2. Users

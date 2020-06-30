@@ -71,6 +71,10 @@ class Tweet(models.Model):
     class Meta:
         ordering = ["-id"]
 
+    @property
+    def is_retweet(self):
+        return self.parent != None
+
     # return dictionary here in a serialized format (this is the old way)
     def serialize(self):
         return {"id": self.id, "content": self.content, "likes": random.randint(0, 200)}
