@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     # Add third-party app
     "rest_framework",
     # Add my internal app
-    "tweets",
+    "tweets.apps.TweetsConfig",
 ]
 
 # @Anyi my added variables

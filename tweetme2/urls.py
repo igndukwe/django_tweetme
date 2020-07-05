@@ -14,34 +14,44 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from tweets.views import (
     home_view,
-    tweet_detail_view,
     tweet_action_view,
     tweet_delete_view,
+    tweet_detail_view,
     tweet_list_view,
     tweet_create_view,
 )
 
+"""
+CLIENT
+Base ENDPOINT /api/tweets
+"""
 urlpatterns = [
     path("admin/", admin.site.urls),
     # @Anyi http://127.0.0.1:8000
     path("", home_view, name="home_view"),
     #####Dynamic URL#######
-    # @Anyi http://127.0.0.1:8000/tweets/1
-    # path("tweets/<int:tweet_id>", home_view, name="home_view"),
-    path("tweets/<int:tweet_id>", tweet_detail_view, name="tweet_detail_view"),
+    # @Anyi http://127.0.0.1:8000/tweets/1/
+    # path("tweets/<int:tweet_id>/", home_view, name="home_view"),
+    # >path("tweets/<int:tweet_id>/", tweet_detail_view, name="tweet_detail_view"),
     # @Anyi http://127.0.0.1:8000/tweets
-    path("tweets", tweet_list_view, name="tweet_list_view"),
-    # @Anyi http://127.0.0.1:8000/create-tweet
-    path("create-tweet", tweet_create_view, name="tweet_create_view"),
-    # @Anyi http://127.0.0.1:8000/tweets/1/delete
+    # >path("tweets", tweet_list_view, name="tweet_list_view"),
+    path("tweets", tweet_list_view),
+    # @Anyi http://127.0.0.1:8000/create/
+    # >path("create", tweet_create_view, name="tweet_create_view"),
+    path("create-tweet", tweet_create_view),
+    # @Anyi http://127.0.0.1:8000/tweets/1/delete/
     # api means that we are appending the REST API
-    path(
-        "api/tweets/<int:tweet_id>/delete", tweet_delete_view, name="tweet_delete_view"
-    ),
-    # @Anyi http://127.0.0.1:8000/tweets/action
-    path("api/tweets/action", tweet_action_view, name="tweet_action_view"),
+    # path(
+    #    "api/tweets/<int:tweet_id>/delete/", tweet_delete_view, name="tweet_delete_view"
+    # ),
+    path("tweets/<int:tweet_id>", tweet_detail_view),
+    # @Anyi http://127.0.0.1:8000/tweets/action/
+    # path("api/tweets/action/", tweet_action_view, name="tweet_action_view"),
+    # Hence with this we now have our tweets app as a REST API not a DJANGO
+    # with the exception of the home page
+    path("api/tweets/", include("tweets.urls")),
 ]

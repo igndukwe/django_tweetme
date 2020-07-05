@@ -73,6 +73,7 @@ class Tweet(models.Model):
 
     @property
     def is_retweet(self):
+        # if parent is equals to none then it is a not a retweet otherwise, it is a retweet
         return self.parent != None
 
     # return dictionary here in a serialized format (this is the old way)
